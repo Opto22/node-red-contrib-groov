@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "suppressImplicitAnyIndexErrors": true, 
+        "noEmitOnError": false,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "outDir": "build"
+    },
+    "include": [
+      "src/**/*.ts",
+      "@opto22/node-red-utils/typings/node-red.d.ts",
+      "test/**/*.ts"
+    ]
+    ,"exclude": []
+}
