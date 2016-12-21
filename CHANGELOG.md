@@ -2,7 +2,7 @@
 
 ### 1.0.0
 
-December 31, 2016
+December 22, 2016
 
  * Initial Release 
 

@@ -39,7 +39,7 @@
       "typescript-formatter": "3.0.1",
       "node-red": "0.15.2"
     },
-    "keywords": [ "Opto 22", "PAC", "groov", "mobile operator interface" ],
+    "keywords": [ "Opto 22", "PAC", "groov", "mobile operator interface", "hmi", "mmi" ],
     "node-red"     : {
         "nodes": {
             "groov": "build/src/node-red-contrib-groov.js"
@@ -48,7 +48,7 @@
     "author": {
         "name": "Opto 22",
         "email": "developer@opto22.com",
-        "url": "http://developer.opto22.com/Node-RED/groov"
+        "url": "http://developer.opto22.com/nodered/groov/"
     },
     "repository" : {
         "type": "git",
