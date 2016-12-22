@@ -675,7 +675,7 @@ describe('Groov Data Store Nodes', function()
         testReadNodeMsgOverride(tagName, 'ding dong', testValue, msg, done);
     });
 
-    it('can handle msg.payload == undefined', function(done)
+    it('read node can handle msg.payload == undefined', function(done)
     {
         var msg = {
         };
@@ -686,7 +686,7 @@ describe('Groov Data Store Nodes', function()
         }, msg);
     });
 
-    it('can handle msg.payload == null', function(done)
+    it('read node can handle msg.payload == null', function(done)
     {
         var msg = {
             payload: 0
@@ -697,6 +697,18 @@ describe('Groov Data Store Nodes', function()
             should(msg.payload).be.type('number');
             done(); // Tell Mocha that we're done.
         }, msg);
+    });    
+
+    it('write node can handle null value', function(done)
+    {
+        testWriteNodeError(dataStoreConfig.id, 'nTag0', 'msg.payload',
+        '', { payload: null },
+            (errorText: any, msg: any) =>
+            {
+                should(msg.groovError.message).be.exactly('value is null');
+                done();
+            });
+
     });    
 
 

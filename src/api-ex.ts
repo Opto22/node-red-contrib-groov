@@ -308,6 +308,9 @@ export class DatastoreApiEx extends DatastoreApi
         else if (!this.tagMap[deviceName][tagName]) {
             callback(null, 'unknown tag name');
         }
+        else if (value === null) {
+            callback(null, 'value is null');
+        }
         else {
             var tagID = this.tagMap[deviceName][tagName];
 
