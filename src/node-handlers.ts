@@ -230,7 +230,7 @@ export abstract class NodeBaseImpl
     // in the message. These override anything in the node's configuration (the 'nodeConfig' parameter).
     protected checkMsgOverrides(msg: any, nodeConfig: NodeBaseConfiguration)
     {
-        if (msg.payload !== undefined) {
+        if (msg.payload) {
             if (typeof msg.payload === 'object') {
 
                 if (msg.payload.tagName !== undefined) {
