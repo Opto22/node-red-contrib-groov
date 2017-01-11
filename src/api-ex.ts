@@ -116,12 +116,26 @@ export class DatastoreApiEx extends DatastoreApi
 
         if (this.originalAddress.trim().toLowerCase() === 'https://localhost') {
             this.isLocalHost = true;
-            this.port = 8443;
+
+            //  For a Groov Box over localhost, use port 8443.
+            if (this.isGroovBox()) {
+                this.port = 8443;
+            }
         }
 
         this.replaceDefaultAuthWithCustomRequestOptions();
 
         this.setApiKey(ApiLib.DatastoreApiApiKeys.api_key, apiKey);
+    }
+
+    private isGroovBox(): boolean
+    {
+        // Look for some obvious marks of a groov Box. This is probably overkill.
+        var hasMmpServer = fs.existsSync("/etc/init.d/mmpserver");
+        var hasSupervisor = fs.existsSync("/usr/sbin/supervisor-get-serial-number");
+        var hasOptoapps = fs.existsSync("/var/lib/jetty/optoapps");
+
+        return hasMmpServer && hasSupervisor && hasOptoapps;
     }
 
     // The TypeScript client generated with swagger-codegen does not allow us to add our own
