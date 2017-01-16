@@ -4,7 +4,8 @@
 
 Fixes
 
- * Fix for #1 - localhost address not working for Node-RED and Groov Server on same machine.
+ * Fix for [#1](https://github.com/Opto22/node-red-contrib-groov/issues/1) - localhost address
+not working for Node-RED and Groov Server on same machine.
 
 ### 1.0.0 - December 22, 2016
 
