@@ -190,6 +190,11 @@ export class DatastoreApiEx extends DatastoreApi
         return this.tagMap ? true : false; // return booleans, not the map itself.
     }
 
+    public clearTagMap()
+    {
+        this.tagMap = null;
+    }
+
     private populateTagMap(callback: (error: any) => void)
     {
         this.tagMap = {};

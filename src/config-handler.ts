@@ -32,6 +32,7 @@ var RED: NodeRed.RED;
 export function setRED(globalRED: NodeRed.RED)
 {
     RED = globalRED;
+    globalConnections.addWatchEvent();
 }
 
 /**
@@ -199,6 +200,16 @@ export class DataStoreConnections
     public getConnection(id: string): DataStoreConnection
     {
         return this.connectionCache[id];
+    }
+
+    public addWatchEvent()
+    {
+        RED.events.on('nodes-started', () =>
+        {
+            for (var client in this.connectionCache) {
+                this.connectionCache[client].apiClient.clearTagMap();
+            }
+        });
     }
 
 }
