@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Opto 22
+   Copyright Opto 22
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -188,6 +188,11 @@ export class DatastoreApiEx extends DatastoreApi
     public hasTagMap(): boolean
     {
         return this.tagMap ? true : false; // return booleans, not the map itself.
+    }
+
+    public clearTagMap()
+    {
+        this.tagMap = null;
     }
 
     private populateTagMap(callback: (error: any) => void)

@@ -1,5 +1,12 @@
 # Node-RED for Groov
 
+### 1.0.2 - January 24, 2017
+
+Improvements
+
+ * The nodes will now reacquire the list of tags from _groov_ when any flow is deployed. Previously
+it required a Full Deploy to use any new tags added to the _groov_ project.
+
 ### 1.0.1 - January 16, 2017
 
 Fixes

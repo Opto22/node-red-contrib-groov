@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Opto 22
+   Copyright Opto 22
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ var RED: NodeRed.RED;
 export function setRED(globalRED: NodeRed.RED)
 {
     RED = globalRED;
+    globalConnections.addWatchEvent();
 }
 
 /**
@@ -199,6 +200,16 @@ export class DataStoreConnections
     public getConnection(id: string): DataStoreConnection
     {
         return this.connectionCache[id];
+    }
+
+    public addWatchEvent()
+    {
+        RED.events.on('nodes-started', () =>
+        {
+            for (var client in this.connectionCache) {
+                this.connectionCache[client].apiClient.clearTagMap();
+            }
+        });
     }
 
 }
