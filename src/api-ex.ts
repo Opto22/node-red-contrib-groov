@@ -105,9 +105,16 @@ export class DatastoreApiEx extends DatastoreApi
     private event: events.EventEmitter;
     private configError: boolean;
 
+    private tagMap: any;
+
     constructor(apiKey: string, address: string, publicCertFile?: Buffer, caCertFile?: Buffer)
     {
-        super(address + '/api');
+        // TODO: This path code is only a triage for EPIC. We need an actual switch or autodetect.
+        let path = DatastoreApiEx.isEpicBox() ? '/view/api/' : '/api'; 
+        
+        super(address + path);
+
+        this.tagMap = null;
         this.originalAddress = address;
         this.port = 443;
         this.apiKey = apiKey;
@@ -136,6 +143,14 @@ export class DatastoreApiEx extends DatastoreApi
         var hasOptoapps = fs.existsSync("/var/lib/jetty/optoapps");
 
         return hasMmpServer && hasSupervisor && hasOptoapps;
+    }
+
+    static isEpicBox(): boolean
+    {
+        // Look for some obvious marks of an EPIC box.
+        var hasOptoApps = fs.existsSync("/usr/share/nxtio/");
+
+        return hasOptoApps;
     }
 
     // The TypeScript client generated with swagger-codegen does not allow us to add our own
@@ -182,8 +197,6 @@ export class DatastoreApiEx extends DatastoreApi
 
         return this.configError;
     }
-
-    private tagMap: any = null;
 
     public hasTagMap(): boolean
     {
