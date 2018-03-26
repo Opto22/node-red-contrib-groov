@@ -148,7 +148,7 @@ export class DatastoreApiEx extends DatastoreApi
     static isEpicBox(): boolean
     {
         // Look for some obvious marks of an EPIC box.
-        var hasOptoApps = fs.existsSync("/usr/share/nxtio/");
+        var hasOptoApps = fs.existsSync("/usr/share/nxtio/XXX/");
 
         return hasOptoApps;
     }

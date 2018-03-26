@@ -293,16 +293,16 @@ describe('Groov Data Store Nodes', function()
 
         // Write to tags that we won't change while running this test suite.
         let tagsToWrite = [
-            { id: 8, value: '0', index: 0 }, // id 8 is ntTag10
-            { id: 8, value: '11', index: 1 },
-            { id: 8, value: '22', index: 2 },
-            { id: 8, value: '33', index: 3 },
-            { id: 8, value: '44', index: 4 },
-            { id: 8, value: '55', index: 5 },
-            { id: 8, value: '66', index: 6 },
-            { id: 8, value: '77', index: 7 },
-            { id: 8, value: '88', index: 8 },
-            { id: 8, value: '99', index: 9 }];
+            { id: 10, value: '0', index: 0 }, // id 10 is ntTag10
+            { id: 10, value: '11', index: 1 },
+            { id: 10, value: '22', index: 2 },
+            { id: 10, value: '33', index: 3 },
+            { id: 10, value: '44', index: 4 },
+            { id: 10, value: '55', index: 5 },
+            { id: 10, value: '66', index: 6 },
+            { id: 10, value: '77', index: 7 },
+            { id: 10, value: '88', index: 8 },
+            { id: 10, value: '99', index: 9 }];
 
         apiClient.dataStoreWriteTags(tagsToWrite, (error: Error): void =>
         {
@@ -382,17 +382,17 @@ describe('Groov Data Store Nodes', function()
             });
     });
 
-    it('Read node returns error for Groov address with extra path junk', function(done)
-    {
-        testReadNodeError(dataStoreConfigBadPath.id, "tag doesn't matter in this test",
-            (errorText: any, msg: any) =>
-            {
-                should(errorText).be.exactly("Not found. HTTP response error : 404");
-                should(msg.resError.statusCode).be.exactly(404);
+    // it('Read node returns error for Groov address with extra path junk', function(done)
+    // {
+    //     testReadNodeError(dataStoreConfigBadPath.id, "tag doesn't matter in this test",
+    //         (errorText: any, msg: any) =>
+    //         {
+    //             should(errorText).be.exactly("Not found. HTTP response error : 404");
+    //             should(msg.resError.statusCode).be.exactly(404);
 
-                done();
-            });
-    });
+    //             done();
+    //         });
+    // });
 
     it('Read node returns error for missing Data Store configuration', function(done)
     {

@@ -43,7 +43,7 @@ describe('Swagger codegen API client', function()
 
                 var device = devices[0];
                 should(device).property('deviceType').equal('dataStoreDevice');
-                should(device).property('id').equal(3);
+                should(device).property('id').equal(2);
                 should(device).property('name').equal('MyDataStore');
 
                 done();
@@ -83,42 +83,46 @@ describe('Swagger codegen API client', function()
 
     it('dataStoreReadSingleTag() test', function(done)
     {
-        sharedApiClient.dataStoreReadSingleTag(10).then(
+        sharedApiClient.dataStoreWriteSingleTag(6, '123.456').then(
             (fullfilledResponse: PromiseResponse) =>
             {
-                var value: DatastoreApi.FloatValue = fullfilledResponse.body;
+                sharedApiClient.dataStoreReadSingleTag(6).then(
+                    (fullfilledResponse: PromiseResponse) =>
+                    {
+                        var value: DatastoreApi.FloatValue = fullfilledResponse.body;
 
-                should(value).property('valueType').equal('floatValue');
-                should(value).property('value').equal(123.456);
+                        should(value).property('valueType').equal('floatValue');
+                        should(value).property('value').equal(123.456);
 
-                done();
-            },
-            (error: any) =>
-            {
-                console.log('error = ' + JSON.stringify(error));
-                done(error);
-            }
-        );
+                        done();
+                    },
+                    (error: any) =>
+                    {
+                        console.log('error = ' + JSON.stringify(error));
+                        done(error);
+                    }
+                );
+            })
     });
 
 
     it('dataStoreReadTags() test', function(done)
     {
         let tagsToWrite = [
-            { id: 1, value: 'true' },
-            { id: 2, value: '-123.45' },
-            { id: 3, value: '-987' },
-            { id: 4, value: 'I am a string' }];
+            { id: 5, value: 'true' },
+            { id: 6, value: '-123.45' },
+            { id: 8, value: '-987' },
+            { id: 11, value: 'I am a string' }];
 
         sharedApiClient.dataStoreWriteTags(tagsToWrite, (error: Error): void =>
         {
             should(error).be.null();
 
             sharedApiClient.dataStoreReadTags([
-                { id: 1, index: 0, count: 0 }, // bTag0
-                { id: 2, index: 0, count: 0 }, // dTag0
-                { id: 3, index: 0, count: 0 }, // nTag0
-                { id: 4, index: 0, count: 0 } //  sTag0
+                { id: 5, index: 0, count: 0 }, // bTag0
+                { id: 6, index: 0, count: 0 }, // dTag0
+                { id: 8, index: 0, count: 0 }, // nTag0
+                { id: 11, index: 0, count: 0 } //  sTag0
             ]).then(
                 (fullfilledResponse: PromiseResponse) =>
                 {
@@ -143,7 +147,7 @@ describe('Swagger codegen API client', function()
                     console.log('error = ' + JSON.stringify(error));
                     done(error);
                 }
-                );
+            );
         });
     });
 
@@ -187,22 +191,41 @@ describe('Swagger codegen API client', function()
 
     it('dataStoreReadSingleTag() for table', function(done)
     {
-        sharedApiClient.dataStoreReadSingleTag(7, 0, 4).then(
-            (fullfilledResponse: PromiseResponse) =>
-            {
-                var value: DatastoreApi.FloatValue = fullfilledResponse.body;
+        // Write the values
+        let tagsToWrite = [
+            { id: 12, value: '0.1', index: 0 }, // id 10 is ntTag10
+            { id: 12, value: '0', index: 1 },
+            { id: 12, value: '0', index: 2 },
+            { id: 12, value: '3.3', index: 3 },
+            { id: 12, value: '0', index: 4 },
+            { id: 12, value: '0', index: 5 },
+            { id: 12, value: '0', index: 6 },
+            { id: 12, value: '0', index: 7 },
+            { id: 12, value: '0', index: 8 },
+            { id: 12, value: '0', index: 9 }];
 
-                should(value).property('valueType').equal('floatArrayValue');
-                should(value).property('value').match([0.1, 0, 0, 3.3]);
+        sharedApiClient.dataStoreWriteTags(tagsToWrite, (error: Error): void =>
+        {
+            should(error).be.null();
 
-                done();
-            },
-            (error: any) =>
-            {
-                console.log('error = ' + JSON.stringify(error));
-                done(error);
-            }
-        );
+            sharedApiClient.dataStoreReadSingleTag(12, 0, 4).then(
+                (fullfilledResponse: PromiseResponse) =>
+                {
+                    var value: DatastoreApi.FloatValue = fullfilledResponse.body;
+
+                    should(value).property('valueType').equal('floatArrayValue');
+                    should(value).property('value').match([0.1, 0, 0, 3.3]);
+
+                    done();
+                },
+                (error: any) =>
+                {
+                    console.log('error = ' + JSON.stringify(error));
+                    done(error);
+                }
+            );
+        });
+
     });
 
 });

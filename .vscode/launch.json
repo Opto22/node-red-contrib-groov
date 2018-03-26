@@ -30,7 +30,7 @@
             "args": [
                 "--no-timeouts",
                 "--recursive",
-                "${workspaceRoot}/build/test/**/*.js"
+                "${workspaceRoot}/build/test/**/api-ex*.js"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -42,7 +42,7 @@
                 "NODE_ENV": "testing"
             },
             "externalConsole": false,
-            "sourceMaps": true,
+            "sourceMaps": false,
             "outDir": "${workspaceRoot}/build"
         },
         {

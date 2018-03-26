@@ -41,7 +41,7 @@ describe('Enhanced API client', function()
     it('getReadSingleTagByNamePromise test', function(done)
     {
 
-        sharedApiClient.getReadSingleTagByNamePromise('MyDataStore', 'bTag0', 0, 0,
+        sharedApiClient.getReadSingleTagByNamePromise('MyDataStore', 'bTag0', undefined, undefined,
             (promise: Promise<PromiseResponse>, error: string): void =>
             {
                 promise.then(
@@ -200,6 +200,7 @@ describe('Enhanced API client', function()
 
     it('getReadSingleTagByNamePromise() will return error with a bad address', function(done)
     {
+        this.timeout(8000);
         var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey, 'https://junky-junk-junk', publicCertFile, caCertFile);
         localApiClient.getReadSingleTagByNamePromise('MyDataStore', 'dTag0', undefined, undefined,
             (promise: Promise<PromiseResponse>, error: any): void =>
