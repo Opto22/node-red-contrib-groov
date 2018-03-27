@@ -59,7 +59,7 @@ describe('Config handlers', function()
 
         // Need to call it with dataStoreNode as 'this'
         ConfigHandler.createDataStoreNode.call(dataStoreNode, {
-            dsName: 'MyDataStore',
+            dsName: 'NodeRedTestDataStore',
             project: 'projectNode1',
             id: 'dataStore0',
             type: ConfigHandler.GroovDataStoreNodeType
@@ -67,6 +67,6 @@ describe('Config handlers', function()
 
         // Test a few things
         (<ConfigHandler.DataStoreNode><any>dataStoreNode).project.id.should.be.equal('projectNode1');
-        (<ConfigHandler.DataStoreNode><any>dataStoreNode).dsName.should.be.equal('MyDataStore');
+        (<ConfigHandler.DataStoreNode><any>dataStoreNode).dsName.should.be.equal('NodeRedTestDataStore');
     });
 });

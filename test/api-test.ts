@@ -43,8 +43,8 @@ describe('Swagger codegen API client', function()
 
                 var device = devices[0];
                 should(device).property('deviceType').equal('dataStoreDevice');
-                should(device).property('id').equal(2);
-                should(device).property('name').equal('MyDataStore');
+                should(device).property('id').be.greaterThanOrEqual(0);
+                should(device).property('name').equal('NodeRedTestDataStore');
 
                 done();
             },

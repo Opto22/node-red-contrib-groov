@@ -250,11 +250,11 @@ describe('Groov Data Store Nodes', function()
         let deviceConfigBadPath = createDeviceConfig('deviceId3', TestSettings.groovAddress + '/extra_junk',
             TestSettings.groovApiKey);
 
-        dataStoreConfig = createDataStoreConfig('dataStoreId0', 'MyDataStore', deviceConfig);
-        dataStoreConfigMissingGroov = createDataStoreConfig('dataStoreId1', 'MyDataStore2', null);
-        dataStoreConfigMissingApiKey = createDataStoreConfig('dataStoreId2', 'MyDataStore3', deviceConfigMissingApiKey);
-        dataStoreConfigBadAddress = createDataStoreConfig('dataStoreId3', 'MyDataStore4', deviceConfigBadAddress);
-        dataStoreConfigBadPath = createDataStoreConfig('dataStoreId4', 'MyDataStore4', deviceConfigBadPath);
+        dataStoreConfig = createDataStoreConfig('dataStoreId0', 'NodeRedTestDataStore', deviceConfig);
+        dataStoreConfigMissingGroov = createDataStoreConfig('dataStoreId1', 'NodeRedTestDataStore2', null);
+        dataStoreConfigMissingApiKey = createDataStoreConfig('dataStoreId2', 'NodeRedTestDataStore3', deviceConfigMissingApiKey);
+        dataStoreConfigBadAddress = createDataStoreConfig('dataStoreId3', 'NodeRedTestDataStore4', deviceConfigBadAddress);
+        dataStoreConfigBadPath = createDataStoreConfig('dataStoreId4', 'NodeRedTestDataStore4', deviceConfigBadPath);
 
 
         var publicCertFile: Buffer;
@@ -445,7 +445,7 @@ describe('Groov Data Store Nodes', function()
         tableIndex?: number)
     {
         var client = ConfigHandler.globalConnections.getConnection(dataStoreConfig.project.id);
-        client.apiClient.getWriteSingleTagByNamePromise(JSON.stringify(testValue), 'MyDataStore', tagName, tableIndex,
+        client.apiClient.getWriteSingleTagByNamePromise(JSON.stringify(testValue), 'NodeRedTestDataStore', tagName, tableIndex,
             (promise: Promise<PromiseResponse>, error: any): void =>
             {
                 if (promise) {

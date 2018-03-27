@@ -41,7 +41,7 @@ describe('Enhanced API client', function()
     it('getReadSingleTagByNamePromise test', function(done)
     {
 
-        sharedApiClient.getReadSingleTagByNamePromise('MyDataStore', 'bTag0', undefined, undefined,
+        sharedApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'bTag0', undefined, undefined,
             (promise: Promise<PromiseResponse>, error: string): void =>
             {
                 promise.then(
@@ -67,13 +67,13 @@ describe('Enhanced API client', function()
 
     function readWriteTest(tagName: string, value: any, done: MochaDone, index?: number): void
     {
-        sharedApiClient.getWriteSingleTagByNamePromise(JSON.stringify(value), 'MyDataStore', tagName, index,
+        sharedApiClient.getWriteSingleTagByNamePromise(JSON.stringify(value), 'NodeRedTestDataStore', tagName, index,
             (promise: Promise<PromiseResponse>, error: string): void =>
             {
                 promise.then(
                     (fullfilledResponse: PromiseResponse) =>
                     {
-                        sharedApiClient.getReadSingleTagByNamePromise('MyDataStore', tagName, index, index ? 1 : undefined,
+                        sharedApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', tagName, index, index ? 1 : undefined,
                             (promise2: Promise<PromiseResponse>, error: string): void =>
                             {
                                 promise2.then(
@@ -168,7 +168,7 @@ describe('Enhanced API client', function()
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
-        localApiClient.getReadSingleTagByNamePromise('MyDataStore', 'dTag0', undefined, undefined, (promise: Promise<PromiseResponse>, error: string): void =>
+        localApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'dTag0', undefined, undefined, (promise: Promise<PromiseResponse>, error: string): void =>
         {
             should(error).be.null();
             promise.then((fullfilledResponse: PromiseResponse) =>
@@ -186,7 +186,7 @@ describe('Enhanced API client', function()
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
-        localApiClient.getWriteSingleTagByNamePromise('4.5', 'MyDataStore', 'dTag0', undefined, (promise: Promise<PromiseResponse>, error: string): void =>
+        localApiClient.getWriteSingleTagByNamePromise('4.5', 'NodeRedTestDataStore', 'dTag0', undefined, (promise: Promise<PromiseResponse>, error: string): void =>
         {
             should(error).be.null();
             promise.then((fullfilledResponse: PromiseResponse) =>
@@ -202,7 +202,7 @@ describe('Enhanced API client', function()
     {
         this.timeout(8000);
         var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey, 'https://junky-junk-junk', publicCertFile, caCertFile);
-        localApiClient.getReadSingleTagByNamePromise('MyDataStore', 'dTag0', undefined, undefined,
+        localApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'dTag0', undefined, undefined,
             (promise: Promise<PromiseResponse>, error: any): void =>
             {
                 should(error).be.not.null();
@@ -215,7 +215,7 @@ describe('Enhanced API client', function()
     it('getWriteSingleTagByNamePromise() will return error with a bad address', function(done)
     {
         var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey, 'https://junky-junk-junk');
-        localApiClient.getWriteSingleTagByNamePromise('4.5', 'MyDataStore', 'dTag0', undefined,
+        localApiClient.getWriteSingleTagByNamePromise('4.5', 'NodeRedTestDataStore', 'dTag0', undefined,
             (promise: Promise<PromiseResponse>, error: any): void =>
             {
                 should(error).be.not.null();
@@ -226,7 +226,7 @@ describe('Enhanced API client', function()
 
     it('getReadSingleTagByNamePromise() with bad tag name returns an error', function(done)
     {
-        sharedApiClient.getReadSingleTagByNamePromise('MyDataStore', 'Homer', undefined, undefined,
+        sharedApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'Homer', undefined, undefined,
             (promise: Promise<PromiseResponse>, error: string): void =>
             {
                 should(error).be.not.null();
@@ -248,7 +248,7 @@ describe('Enhanced API client', function()
 
     it('getWriteSingleTagByNamePromise() with bad tag name returns an error', function(done)
     {
-        sharedApiClient.getWriteSingleTagByNamePromise('4.5', 'MyDataStore', 'Homer', undefined, (promise: Promise<PromiseResponse>, error: string): void =>
+        sharedApiClient.getWriteSingleTagByNamePromise('4.5', 'NodeRedTestDataStore', 'Homer', undefined, (promise: Promise<PromiseResponse>, error: string): void =>
         {
             should(error).be.not.null();
             should(error).be.exactly('unknown tag name');
