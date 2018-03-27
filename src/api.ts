@@ -273,14 +273,14 @@ export class DatastoreApi
     {
         this.authentications[DatastoreApiApiKeys[key]].apiKey = value;
     }
-    private extendObj<T1, T2>(objA: T1, objB: T2)
+    private extendObj<T1, T2>(objA: T1 & T2, objB: T2): T1 & T2
     {
         for (let key in objB) {
             if (objB.hasOwnProperty(key)) {
-                objA[key] = objB[key];
+                objA[key] = (<any>objB[key]);
             }
         }
-        return <T1 & T2>objA;
+        return objA;
     }
     /**
      * 
