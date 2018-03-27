@@ -55,10 +55,18 @@ describe('Sanity Checks', function()
 
                 should(devices).be.an.Array();
 
-                var device = devices[0];
-                should(device).property('deviceType').equal('dataStoreDevice');
-                should(device).property('id').be.greaterThanOrEqual(0);
-                should(device).property('name').equal('NodeRedTestDataStore');
+                let foundIt = false;
+
+                for (let device of devices) {
+                    should(device).property('deviceType').equal('dataStoreDevice');
+                    should(device).property('id').be.greaterThanOrEqual(0);
+
+                    if (device.name == 'NodeRedTestDataStore') {
+                        foundIt = true;
+                    }
+                }
+
+                should(foundIt).be.true();
 
                 done();
             },
@@ -115,6 +123,11 @@ describe('Sanity Checks', function()
         testTag('nTag0', 'integerValue', done);
     });
 
+    it('ntTag5 is in the Groov project', function(done)
+    {
+        testTag('ntTag5', 'integerArrayValue', done);
+    });
+
     it('ntTag10 is in the Groov project', function(done)
     {
         testTag('ntTag10', 'integerArrayValue', done);
@@ -123,6 +136,11 @@ describe('Sanity Checks', function()
     it('dTag0 is in the Groov project', function(done)
     {
         testTag('dTag0', 'floatValue', done);
+    });
+
+    it('dtTag10 is in the Groov project', function(done)
+    {
+        testTag('dtTag10', 'floatArrayValue', done);
     });
 
     it('sTag0 is in the Groov project', function(done)

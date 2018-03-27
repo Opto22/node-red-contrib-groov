@@ -31,6 +31,7 @@ import * as http from "http";
 import * as Promise from 'bluebird';
 import * as should from 'should';
 import * as assert from 'assert';
+import { TagDefinition } from "../src/api";
 
 var TestSettings = require('./settings.json');
 
@@ -227,6 +228,32 @@ function testWriteNodeError(dataStoreId: string, tagName: string, valueType: str
     injectMsg(nodeConfig, RED.nodes.getNode(dataStoreId), node, msg);
 }
 
+var tagNameToDefMap: {
+    [key: string]: TagDefinition
+} = {};
+
+
+function getTagMap(apiClient: DatastoreApiEx, done: (error?: any) => void)
+{
+    apiClient.dataStoreListTags().then(
+        (fullfilledResponse: PromiseResponse) =>
+        {
+            var tags = fullfilledResponse.body;
+
+            should(tags).be.an.Array();
+
+            for (var tag of tags) {
+                tagNameToDefMap[tag.name] = tag; // capture all the tags by name
+            }
+
+            done();
+        },
+        (error: any) =>
+        {
+            done(error);
+        }
+    );
+}
 
 
 describe('Groov Data Store Nodes', function()
@@ -239,7 +266,7 @@ describe('Groov Data Store Nodes', function()
     let dataStoreConfigBadPath: ConfigHandler.DataStoreNode;
     let apiClient: DatastoreApiEx; // client from dataStoreConfig
 
-    before(function(done: MochaDone)
+    before(function(beforeDone: MochaDone)
     {
         let deviceConfig = createDeviceConfig('deviceId0', TestSettings.groovAddress,
             TestSettings.groovApiKey, TestSettings.groovCaCertPath);
@@ -291,23 +318,28 @@ describe('Groov Data Store Nodes', function()
         let connection = ConfigHandler.globalConnections.getConnection(dataStoreConfig.project.id)
         apiClient = connection.apiClient;
 
-        // Write to tags that we won't change while running this test suite.
-        let tagsToWrite = [
-            { id: 10, value: '0', index: 0 }, // id 10 is ntTag10
-            { id: 10, value: '11', index: 1 },
-            { id: 10, value: '22', index: 2 },
-            { id: 10, value: '33', index: 3 },
-            { id: 10, value: '44', index: 4 },
-            { id: 10, value: '55', index: 5 },
-            { id: 10, value: '66', index: 6 },
-            { id: 10, value: '77', index: 7 },
-            { id: 10, value: '88', index: 8 },
-            { id: 10, value: '99', index: 9 }];
-
-        apiClient.dataStoreWriteTags(tagsToWrite, (error: Error): void =>
+        getTagMap(apiClient, () =>
         {
-            should(error).be.null();
-            done();
+            let tagId = tagNameToDefMap['ntTag10'].id;
+
+            // Write to tags that we won't change while running this test suite.
+            let tagsToWrite = [
+                { id: tagId, value: '0', index: 0 }, // id 10 is ntTag10
+                { id: tagId, value: '11', index: 1 },
+                { id: tagId, value: '22', index: 2 },
+                { id: tagId, value: '33', index: 3 },
+                { id: tagId, value: '44', index: 4 },
+                { id: tagId, value: '55', index: 5 },
+                { id: tagId, value: '66', index: 6 },
+                { id: tagId, value: '77', index: 7 },
+                { id: tagId, value: '88', index: 8 },
+                { id: tagId, value: '99', index: 9 }];
+
+            apiClient.dataStoreWriteTags(tagsToWrite, (error: Error): void =>
+            {
+                should(error).be.null();
+                beforeDone();
+            });
         });
     });
 
@@ -697,19 +729,19 @@ describe('Groov Data Store Nodes', function()
             should(msg.payload).be.type('number');
             done(); // Tell Mocha that we're done.
         }, msg);
-    });    
+    });
 
     it('write node can handle null value', function(done)
     {
         testWriteNodeError(dataStoreConfig.id, 'nTag0', 'msg.payload',
-        '', { payload: null },
+            '', { payload: null },
             (errorText: any, msg: any) =>
             {
                 should(msg.groovError.message).be.exactly('value is null');
                 done();
             });
 
-    });    
+    });
 
 
     it('can write an integer using a message override', function(done)
