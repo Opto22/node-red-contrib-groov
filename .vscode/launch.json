@@ -30,7 +30,7 @@
             "args": [
                 "--no-timeouts",
                 "--recursive",
-                "${workspaceRoot}/build/test/**/api-ex*.js"
+                "${workspaceRoot}/build/test/**/*.js"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
