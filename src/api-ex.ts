@@ -110,7 +110,7 @@ export class DatastoreApiEx extends DatastoreApi
     constructor(apiKey: string, address: string, publicCertFile?: Buffer, caCertFile?: Buffer)
     {
         // TODO: This path code is only a triage for EPIC. We need an actual switch or autodetect.
-        let path = DatastoreApiEx.isEpicBox() ? '/view/api/' : '/api'; 
+        let path = DatastoreApiEx.isHostEpic() ? '/view/api/' : '/api'; 
         
         super(address + path);
 
@@ -125,7 +125,7 @@ export class DatastoreApiEx extends DatastoreApi
             this.isLocalHost = true;
 
             //  For a Groov Box over localhost, use port 8443.
-            if (this.isGroovBox()) {
+            if (this.isHostGroovBox()) {
                 this.port = 8443;
             }
         }
@@ -135,7 +135,7 @@ export class DatastoreApiEx extends DatastoreApi
         this.setApiKey(ApiLib.DatastoreApiApiKeys.api_key, apiKey);
     }
 
-    private isGroovBox(): boolean
+    private isHostGroovBox(): boolean
     {
         // Look for some obvious marks of a groov Box. This is probably overkill.
         var hasMmpServer = fs.existsSync("/etc/init.d/mmpserver");
@@ -145,10 +145,10 @@ export class DatastoreApiEx extends DatastoreApi
         return hasMmpServer && hasSupervisor && hasOptoapps;
     }
 
-    static isEpicBox(): boolean
+    static isHostEpic(): boolean
     {
         // Look for some obvious marks of an EPIC box.
-        var hasOptoApps = fs.existsSync("/usr/share/nxtio/XXX/");
+        var hasOptoApps = fs.existsSync("/usr/share/nxtio/");
 
         return hasOptoApps;
     }
