@@ -64,9 +64,14 @@ module.exports = function(grunt) {
       }
     },    
     copy: {
-      testSettings: {
+      testSettingsBoxOrServer: {
         nonull: true,
-        src: 'test/settings.json',
+        src: 'test/settings.groovBoxOrServer.json',
+        dest:'build/test/test/settings.json'
+      },
+      testSettingsEPIC: {
+        nonull: true,
+        src: 'test/settings.groovEPIC.json',
         dest:'build/test/test/settings.json'
       },
       build: {
@@ -116,6 +121,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-istanbul')
 
   grunt.registerTask("default", ["clean:build", "copy:build", "ts"]);
-  grunt.registerTask("test", 'comment', ['clean:coverage', 'default', 'copy:testSettings', 'mocha_istanbul:default']);
+  grunt.registerTask("test-box",  'comment', ['clean:coverage', 'default', 'copy:testSettingsBoxOrServer', 'mocha_istanbul:default']);
+  grunt.registerTask("test-epic", 'comment', ['clean:coverage', 'default', 'copy:testSettingsEPIC',        'mocha_istanbul:default']);
   grunt.registerTask("package", 'comment', ['clean:package', 'default', 'copy:package', 'npm-command:pack']);
 };
