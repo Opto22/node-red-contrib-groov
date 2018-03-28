@@ -45,6 +45,11 @@ describe('Sanity Checks', function()
     // {
     // });
 
+    before(function(beforeDone: MochaDone)
+    {
+        sharedApiClient.getServerType(beforeDone);
+    });
+
 
     it('NodeRedTestDataStore is in the Groov project', function(done)
     {

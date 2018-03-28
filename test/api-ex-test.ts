@@ -37,6 +37,10 @@ describe('Enhanced API client', function()
     // {
     // });
 
+    before(function(beforeDone: MochaDone)
+    {
+        sharedApiClient.getServerType(beforeDone);
+    });
 
     it('getReadSingleTagByNamePromise test', function(done)
     {
@@ -168,15 +172,19 @@ describe('Enhanced API client', function()
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
-        localApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'dTag0', undefined, undefined, (promise: Promise<PromiseResponse>, error: string): void =>
+        localApiClient.getServerType(() =>
         {
-            should(error).be.null();
-            promise.then((fullfilledResponse: PromiseResponse) =>
+            localApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'dTag0', undefined, undefined, (promise: Promise<PromiseResponse>, error: string): void =>
             {
-                should(localApiClient.hasTagMap()).be.exactly(true);
-                done()
+                should(error).be.null();
+                promise.then((fullfilledResponse: PromiseResponse) =>
+                {
+                    should(localApiClient.hasTagMap()).be.exactly(true);
+                    done()
+                });
             });
-        });
+        })
+
     });
 
 
@@ -186,13 +194,16 @@ describe('Enhanced API client', function()
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
-        localApiClient.getWriteSingleTagByNamePromise('4.5', 'NodeRedTestDataStore', 'dTag0', undefined, (promise: Promise<PromiseResponse>, error: string): void =>
+        localApiClient.getServerType(() =>
         {
-            should(error).be.null();
-            promise.then((fullfilledResponse: PromiseResponse) =>
+            localApiClient.getWriteSingleTagByNamePromise('4.5', 'NodeRedTestDataStore', 'dTag0', undefined, (promise: Promise<PromiseResponse>, error: string): void =>
             {
-                should(localApiClient.hasTagMap()).be.exactly(true);
-                done()
+                should(error).be.null();
+                promise.then((fullfilledResponse: PromiseResponse) =>
+                {
+                    should(localApiClient.hasTagMap()).be.exactly(true);
+                    done()
+                });
             });
         });
     });

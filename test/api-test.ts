@@ -32,6 +32,12 @@ describe('Swagger codegen API client', function()
     var sharedApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
         'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
 
+
+    before(function(beforeDone: MochaDone)
+    {
+        sharedApiClient.getServerType(beforeDone);
+    });
+    
     it('dataStoreListDevices() works', function(done)
     {
         sharedApiClient.dataStoreListDevices().then(

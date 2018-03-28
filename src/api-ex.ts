@@ -105,14 +105,23 @@ export class DatastoreApiEx extends DatastoreApi
     private event: events.EventEmitter;
     private configError: boolean;
 
+    private hasDeterminedSystemType: boolean;
+    private isGroovBox: boolean;
+    private isGroovEPIC: boolean;
+
+
     private tagMap: any;
 
     constructor(apiKey: string, address: string, publicCertFile?: Buffer, caCertFile?: Buffer)
     {
-        // TODO: This path code is only a triage for EPIC. We need an actual switch or autodetect.
-        let path = DatastoreApiEx.isHostEpic() ? '/view/api/' : '/api'; 
-        
+        // Assume that the target is a Groov Box, not EPIC.
+        let path = '/api/';
+
         super(address + path);
+
+        this.hasDeterminedSystemType = false;
+        this.isGroovBox = false;
+        this.isGroovEPIC = false;
 
         this.tagMap = null;
         this.originalAddress = address;
@@ -196,6 +205,68 @@ export class DatastoreApiEx extends DatastoreApi
         }
 
         return this.configError;
+    }
+
+
+    public getServerType(callback: (error?: any) => any)
+    {
+
+        if (this.hasDeterminedSystemType) {
+            process.nextTick(callback);
+        }
+        else {
+            super.dataStoreListDevices().then(
+                // onFullfilled handler
+                (fullfilledResponse: PromiseResponse) =>
+                {
+                    if (fullfilledResponse.body && Array.isArray(fullfilledResponse.body)) {
+                        this.isGroovBox = true;
+                        this.hasDeterminedSystemType = true;
+                        callback();
+                    }
+                    else {
+                        this.basePath = '/view/api/';
+
+                        super.dataStoreListDevices().then(
+                            (fullfilledResponse: PromiseResponse) =>
+                            {
+                                if (fullfilledResponse.body && Array.isArray(fullfilledResponse.body)) {
+                                    this.isGroovEPIC = true;
+                                    this.hasDeterminedSystemType = true;
+                                    callback();
+                                }
+                                else {
+                                    this.basePath = this.originalAddress + '/api/'; // reset to default
+                                    callback(); // error ?
+                                }
+                            }).catch((error: any) =>
+                            {
+                                callback(error);
+                            });
+                    }
+
+                }
+            ).catch((error: any) =>
+            {
+                this.basePath = this.originalAddress + '/view/api/';
+                super.dataStoreListDevices().then(
+                    (fullfilledResponse: PromiseResponse) =>
+                    {
+                        if (fullfilledResponse.body && Array.isArray(fullfilledResponse.body)) {
+                            this.isGroovEPIC = true;
+                            this.hasDeterminedSystemType = true;
+                            callback();
+                        }
+                        else {
+                            this.basePath = this.originalAddress + '/api/'; // reset to default
+                            callback(); // error ?
+                        }
+                    }).catch((error: any) =>
+                    {
+                        callback(error);
+                    });
+            });
+        }
     }
 
     public hasTagMap(): boolean
@@ -363,14 +434,14 @@ export class DatastoreApiEx extends DatastoreApi
 
         this.dataStoreWriteSingleTag(tag.id, tag.value, tag.index)
             .then(
-            (fullfilledResponse: PromiseResponse) =>
-            {
-                this.dataStoreWriteTags(tags, callback);
-            },
-            (error: any) =>
-            {
-                callback(error);
-            }
+                (fullfilledResponse: PromiseResponse) =>
+                {
+                    this.dataStoreWriteTags(tags, callback);
+                },
+                (error: any) =>
+                {
+                    callback(error);
+                }
             );
     }
 }

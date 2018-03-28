@@ -32,6 +32,7 @@ import * as Promise from 'bluebird';
 import * as should from 'should';
 import * as assert from 'assert';
 import { TagDefinition } from "../src/api";
+import * as ClientTestUtil from './client-test-util';
 
 var TestSettings = require('./settings.json');
 
@@ -264,7 +265,12 @@ describe('Groov Data Store Nodes', function()
     let dataStoreConfigMissingApiKey: ConfigHandler.DataStoreNode;
     let dataStoreConfigBadAddress: ConfigHandler.DataStoreNode;
     let dataStoreConfigBadPath: ConfigHandler.DataStoreNode;
-    let apiClient: DatastoreApiEx; // client from dataStoreConfig
+    
+    // Create a client that allows us to avoid conflict with 
+    // the instance used inside of the nodes.  We don't want to
+    // interfere with it at all.
+    let clientLibAndCerts = ClientTestUtil.createClient();
+    let apiClient: DatastoreApiEx = clientLibAndCerts.sharedApiClient;
 
     before(function(beforeDone: MochaDone)
     {
@@ -315,30 +321,31 @@ describe('Groov Data Store Nodes', function()
         NodeHandlers.setRED(RED);
         ConfigHandler.setRED(RED);
 
-        let connection = ConfigHandler.globalConnections.getConnection(dataStoreConfig.project.id)
-        apiClient = connection.apiClient;
 
-        getTagMap(apiClient, () =>
+        apiClient.getServerType(() =>
         {
-            let tagId = tagNameToDefMap['ntTag10'].id;
-
-            // Write to tags that we won't change while running this test suite.
-            let tagsToWrite = [
-                { id: tagId, value: '0', index: 0 }, // id 10 is ntTag10
-                { id: tagId, value: '11', index: 1 },
-                { id: tagId, value: '22', index: 2 },
-                { id: tagId, value: '33', index: 3 },
-                { id: tagId, value: '44', index: 4 },
-                { id: tagId, value: '55', index: 5 },
-                { id: tagId, value: '66', index: 6 },
-                { id: tagId, value: '77', index: 7 },
-                { id: tagId, value: '88', index: 8 },
-                { id: tagId, value: '99', index: 9 }];
-
-            apiClient.dataStoreWriteTags(tagsToWrite, (error: Error): void =>
+            getTagMap(apiClient, () =>
             {
-                should(error).be.null();
-                beforeDone();
+                let tagId = tagNameToDefMap['ntTag10'].id;
+
+                // Write to tags that we won't change while running this test suite.
+                let tagsToWrite = [
+                    { id: tagId, value: '0', index: 0 }, // id 10 is ntTag10
+                    { id: tagId, value: '11', index: 1 },
+                    { id: tagId, value: '22', index: 2 },
+                    { id: tagId, value: '33', index: 3 },
+                    { id: tagId, value: '44', index: 4 },
+                    { id: tagId, value: '55', index: 5 },
+                    { id: tagId, value: '66', index: 6 },
+                    { id: tagId, value: '77', index: 7 },
+                    { id: tagId, value: '88', index: 8 },
+                    { id: tagId, value: '99', index: 9 }];
+
+                apiClient.dataStoreWriteTags(tagsToWrite, (error: Error): void =>
+                {
+                    should(error).be.null();
+                    beforeDone();
+                });
             });
         });
     });
@@ -476,8 +483,7 @@ describe('Groov Data Store Nodes', function()
         errorResponse?: (error: any) => void,
         tableIndex?: number)
     {
-        var client = ConfigHandler.globalConnections.getConnection(dataStoreConfig.project.id);
-        client.apiClient.getWriteSingleTagByNamePromise(JSON.stringify(testValue), 'NodeRedTestDataStore', tagName, tableIndex,
+        apiClient.getWriteSingleTagByNamePromise(JSON.stringify(testValue), 'NodeRedTestDataStore', tagName, tableIndex,
             (promise: Promise<PromiseResponse>, error: any): void =>
             {
                 if (promise) {
