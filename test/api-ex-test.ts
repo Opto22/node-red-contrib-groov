@@ -5,6 +5,7 @@ import * as Promise from 'bluebird';
 import * as http from 'http';
 import * as DatastoreApi from '../src/api';
 import { DatastoreApiEx } from '../src/api-ex';
+import * as ClientTestUtil from './client-test-util';
 
 var TestSettings = require('./settings.json');
 
@@ -20,18 +21,9 @@ interface PromiseResponse
 // only meant to keep the files organized and to a reasonable size.
 describe('Enhanced API client', function()
 {
-    var publicCertFile: Buffer;
-    var caCertFile: Buffer;
-    if (TestSettings.groovPublicCertPath && TestSettings.groovPublicCertPath.length > 0) {
-        publicCertFile = fs.readFileSync(TestSettings.groovPublicCertPath);
-    }
+    let clientAndCerts = ClientTestUtil.createClient();
 
-    if (TestSettings.groovCaCertPath && TestSettings.groovCaCertPath.length > 0) {
-        caCertFile = fs.readFileSync(TestSettings.groovCaCertPath);
-    }
-
-    var sharedApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
-        'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
+    var sharedApiClient = clientAndCerts.sharedApiClient;
 
     // beforeEach(() =>
     // {
@@ -146,7 +138,9 @@ describe('Enhanced API client', function()
 
     it('hasTagMap() works', function()
     {
-        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey, 'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
+        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
+            'https://' + TestSettings.groovAddress,
+            clientAndCerts.publicCertFile, clientAndCerts.caCertFile);
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
@@ -157,7 +151,8 @@ describe('Enhanced API client', function()
 
     it('hasConfigError() returns false when API key is missing', function()
     {
-        var localApiClient = new DatastoreApiEx(null, 'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
+        var localApiClient = new DatastoreApiEx(null, 'https://' + TestSettings.groovAddress,
+            clientAndCerts.publicCertFile, clientAndCerts.caCertFile);
         should(localApiClient.hasConfigError()).be.exactly(true);
     });
 
@@ -168,7 +163,8 @@ describe('Enhanced API client', function()
 
     it('getReadSingleTagByNamePromise() will load the tag map', function(done)
     {
-        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey, 'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
+        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
+            'https://' + TestSettings.groovAddress, clientAndCerts.publicCertFile, clientAndCerts.caCertFile);
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
@@ -190,7 +186,9 @@ describe('Enhanced API client', function()
 
     it('getWriteSingleTagByNamePromise() will load the tag map', function(done)
     {
-        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey, 'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
+        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
+            'https://' + TestSettings.groovAddress,
+            clientAndCerts.publicCertFile, clientAndCerts.caCertFile);
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
@@ -212,7 +210,10 @@ describe('Enhanced API client', function()
     it('getReadSingleTagByNamePromise() will return error with a bad address', function(done)
     {
         this.timeout(8000);
-        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey, 'https://junky-junk-junk', publicCertFile, caCertFile);
+        var localApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
+            'https://junky-junk-junk',
+            clientAndCerts.publicCertFile, clientAndCerts.caCertFile);
+
         localApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'dTag0', undefined, undefined,
             (promise: Promise<PromiseResponse>, error: any): void =>
             {

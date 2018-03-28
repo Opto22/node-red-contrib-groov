@@ -9,6 +9,7 @@ export function createClient()
 {
     var publicCertFile: Buffer;
     var caCertFile: Buffer;
+    
     if (TestSettings.groovPublicCertPath && TestSettings.groovPublicCertPath.length > 0) {
         publicCertFile = fs.readFileSync(TestSettings.groovPublicCertPath);
     }

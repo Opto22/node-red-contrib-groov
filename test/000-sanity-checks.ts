@@ -6,9 +6,8 @@ import * as http from 'http';
 import * as DatastoreApi from '../src/api';
 import { DatastoreApiEx } from '../src/api-ex';
 import { TagDefinition } from '../src/api';
+import * as ClientTestUtil from './client-test-util';
 import async = require('async');
-
-var TestSettings = require('./settings.json');
 
 interface PromiseResponse
 {
@@ -28,18 +27,7 @@ class DataStoreDevice
 // only meant to keep the files organized and to a reasonable size.
 describe('Sanity Checks', function()
 {
-    var publicCertFile: Buffer;
-    var caCertFile: Buffer;
-    if (TestSettings.groovPublicCertPath && TestSettings.groovPublicCertPath.length > 0) {
-        publicCertFile = fs.readFileSync(TestSettings.groovPublicCertPath);
-    }
-
-    if (TestSettings.groovCaCertPath && TestSettings.groovCaCertPath.length > 0) {
-        caCertFile = fs.readFileSync(TestSettings.groovCaCertPath);
-    }
-
-    var sharedApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
-        'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
+    var sharedApiClient = ClientTestUtil.createClient().sharedApiClient;
 
     // beforeEach(() =>
     // {

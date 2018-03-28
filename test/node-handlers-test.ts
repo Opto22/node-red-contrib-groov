@@ -290,30 +290,24 @@ describe('Groov Data Store Nodes', function()
         dataStoreConfigBadPath = createDataStoreConfig('dataStoreId4', 'NodeRedTestDataStore4', deviceConfigBadPath);
 
 
-        var publicCertFile: Buffer;
-        var caCertFile: Buffer;
-        if (TestSettings.groovPublicCertPath && TestSettings.groovPublicCertPath.length > 0) {
-            publicCertFile = fs.readFileSync(TestSettings.groovPublicCertPath);
-        }
-
-        if (TestSettings.groovCaCertPath && TestSettings.groovCaCertPath.length > 0) {
-            caCertFile = fs.readFileSync(TestSettings.groovCaCertPath);
-        }
-
-        ConfigHandler.globalConnections.createConnection(dataStoreConfig.project.address,
-            dataStoreConfig.project.credentials.key, publicCertFile, caCertFile,
+       ConfigHandler.globalConnections.createConnection(dataStoreConfig.project.address,
+            dataStoreConfig.project.credentials.key, 
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
             dataStoreConfig.project.id);
 
         ConfigHandler.globalConnections.createConnection(dataStoreConfigMissingApiKey.project.address,
-            dataStoreConfigMissingApiKey.project.credentials.key, publicCertFile, caCertFile,
+            dataStoreConfigMissingApiKey.project.credentials.key, 
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
             dataStoreConfigMissingApiKey.project.id);
 
         ConfigHandler.globalConnections.createConnection(dataStoreConfigBadAddress.project.address,
-            dataStoreConfigBadAddress.project.credentials.key, publicCertFile, caCertFile,
+            dataStoreConfigBadAddress.project.credentials.key, 
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
             dataStoreConfigBadAddress.project.id);
 
         ConfigHandler.globalConnections.createConnection(dataStoreConfigBadPath.project.address,
-            dataStoreConfigBadPath.project.credentials.key, publicCertFile, caCertFile,
+            dataStoreConfigBadPath.project.credentials.key, 
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
             dataStoreConfigBadPath.project.id);
 
         should.exist(ConfigHandler.globalConnections.getConnection(dataStoreConfig.project.id));

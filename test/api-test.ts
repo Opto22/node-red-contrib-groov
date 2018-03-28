@@ -5,6 +5,7 @@ import * as Promise from 'bluebird';
 import * as http from 'http';
 import * as DatastoreApi from '../src/api';
 import { DatastoreApiEx } from '../src/api-ex';
+import * as ClientTestUtil from './client-test-util';
 
 var TestSettings = require('./settings.json');
 
@@ -19,25 +20,13 @@ interface PromiseResponse
 // only meant to keep the files organized and to a reasonable size.
 describe('Swagger codegen API client', function()
 {
-    var publicCertFile: Buffer;
-    var caCertFile: Buffer;
-    if (TestSettings.groovPublicCertPath && TestSettings.groovPublicCertPath.length > 0) {
-        publicCertFile = fs.readFileSync(TestSettings.groovPublicCertPath);
-    }
-
-    if (TestSettings.groovCaCertPath && TestSettings.groovCaCertPath.length > 0) {
-        caCertFile = fs.readFileSync(TestSettings.groovCaCertPath);
-    }
-
-    var sharedApiClient = new DatastoreApiEx(TestSettings.groovApiKey,
-        'https://' + TestSettings.groovAddress, publicCertFile, caCertFile);
-
+    var sharedApiClient = ClientTestUtil.createClient().sharedApiClient;
 
     before(function(beforeDone: MochaDone)
     {
         sharedApiClient.getServerType(beforeDone);
     });
-    
+
     it('dataStoreListDevices() works', function(done)
     {
         sharedApiClient.dataStoreListDevices().then(
