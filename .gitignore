@@ -16,3 +16,5 @@ test/settings.*.json
 src/.baseDir.ts
 xunit-results.xml
 groovBox.pem
+groovEPIC.pem
+tscommand*.tmp.txt
