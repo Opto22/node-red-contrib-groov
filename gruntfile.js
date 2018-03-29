@@ -59,7 +59,8 @@ module.exports = function(grunt) {
         options: {
            includeAllSources: true,
            reportFormats: ['cobertura','lcov'],
-           root: 'build/test/'
+           root: 'build/test/',
+           grep: grunt.option('grep')
         }
       }
     },    

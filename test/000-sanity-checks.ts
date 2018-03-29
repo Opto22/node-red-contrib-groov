@@ -25,7 +25,7 @@ class DataStoreDevice
 // of the Swagger codegen REST API client (DatastoreApi). The core parts of the
 // generated client are tested in a different file. This division is really
 // only meant to keep the files organized and to a reasonable size.
-describe('Sanity Checks', function()
+describe('sanity checks', function()
 {
     var sharedApiClient = ClientTestUtil.createClient().sharedApiClient;
 
