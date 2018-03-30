@@ -65,15 +65,20 @@ module.exports = function(grunt) {
       }
     },    
     copy: {
+      testSettings: {
+        nonull: true,
+        src: 'test/settings.json',
+        dest:'build/test/test/settings.json'
+      },
       testSettingsBoxOrServer: {
         nonull: true,
         src: 'test/settings.groovBoxOrServer.json',
-        dest:'build/test/test/settings.json'
+        dest:'test/settings.json'
       },
       testSettingsEPIC: {
         nonull: true,
         src: 'test/settings.groovEPIC.json',
-        dest:'build/test/test/settings.json'
+        dest:'test/settings.json'
       },
       build: {
         files: [
@@ -121,8 +126,18 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-simple-mocha");
   grunt.loadNpmTasks('grunt-mocha-istanbul')
 
-  grunt.registerTask("default", ["clean:build", "copy:build", "ts"]);
-  grunt.registerTask("test-box",  'comment', ['clean:coverage', 'default', 'copy:testSettingsBoxOrServer', 'mocha_istanbul:default']);
-  grunt.registerTask("test-epic", 'comment', ['clean:coverage', 'default', 'copy:testSettingsEPIC',        'mocha_istanbul:default']);
-  grunt.registerTask("package", 'comment', ['clean:package', 'default', 'copy:package', 'npm-command:pack']);
+  grunt.registerTask("default",   ["clean:build", "copy:build", "ts"]);
+
+  /* Standard test task. Uses "test/settings.json" for Groov View info. */
+  grunt.registerTask("test",      ['clean:coverage', 'default', 'copy:testSettings', 'mocha_istanbul:default']);
+
+  /* Extra test tasks to easily test both Groov Box/Server and Groov EPIC.
+     For Groov Box/Server, uses "test/settings.groovBoxOrServer.json". 
+     For Groov EPIC, uses "test/settings.groovEPIC.json". 
+     IMPORTANT: THIS WILL COPY OVER THE EXISTING "test/settings.json" file!!
+  */
+  grunt.registerTask("test-box",  ['copy:testSettingsBoxOrServer', 'test']);
+  grunt.registerTask("test-epic", ['copy:testSettingsEPIC',        'test']);
+  
+  grunt.registerTask("package",   ['clean:package', 'default', 'copy:package', 'npm-command:pack']);
 };

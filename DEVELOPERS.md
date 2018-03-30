@@ -69,7 +69,7 @@ Running all tests requires the following:
 To run all the tests, run:
 
 ```
-grunt test-all
+grunt test
 ```
 
 

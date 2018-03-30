@@ -11,7 +11,7 @@ red-out.txt
 CHANGELOG.html
 README.html
 DEVELOPERS.html
-test/settings.*.json
+test/settings*.json
 .tscache
 src/.baseDir.ts
 xunit-results.xml
