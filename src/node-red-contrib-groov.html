@@ -268,20 +268,25 @@
 </script>
 
 <script type="text/x-red" data-help-name="groov-project">
-    <p>Communication settings for <i>groov</i>.</p>
+    <p>Communication settings for <i>groov</i> View.</p>
     <h2>Basic Configuration</h2>
-    <p><b>Groov Address</b> - the hostname or IP address for connecting to a <i>groov</i> project.
-          Use "localhost" for Node-RED and <i>groov</i> on the same device, such as a GROOV-AR1 <i>groov</i> Box.</p>
+    <p><b>Groov Address</b> - the hostname or IP address for connecting to a <i>groov</i> View project.
+          Use "localhost" for Node-RED and <i>groov</i> View on the same device, such as a
+          <i>groov</i> EPIC PR1 processor or a GROOV-AR1 <i>groov</i> Box.
+    </p>
     <p><b>API Key</b> - an API key for the <i>groov</i> project.</p>
+    <p>&nbsp;</p>
     <h2>HTTPS Settings</h2>    
     <p>Except for "localhost" addresses, the SSL Certificates  fields must also be configured.</p>
     <p><b>CA or Self-Signed</b> - the full path or filename of either a Certificate Authority (CA) or self-signed certificate.</p>
     <p><b>Public Key</b> - the full path or filename of the public key certificate. Leave this field blank if using a self-signed certificate.</p>
     <p>Whether the full path of filename is entered depends on where Node-RED is running.
         <ul>
-            <li>If using a GROOV-AR1 to access another <i>groov</i> Box or Server, upload the certificates 
-            with Node-RED Admin and enter just the filenames here.</li>
-            <li>If using Node-RED on a computer, enter the path and filenames of the certificates, which must be located
+            <li><b>EPIC: </b>If using a <i>groov</i> EPIC PR1 processor to access another <i>groov</i> device or server, upload the certificates 
+                    with <i>groov</i> Manage, using the Security -> Client SSL page. Enter just the filenames here.</li>
+            <li><b>Box: </b>If using a GROOV-AR1 to access another <i>groov</i> Box or Server, upload the certificates 
+            with Node-RED Admin. Enter just the filenames here.</li>
+            <li><b>Computer: </b>If using Node-RED on a computer, enter the path and filenames of the certificates, which must be located
                 on the same computer. They will be loaded directly from the local file system.</li>
         </ul>
     <p>The certificates must be in PEM format.</p>
@@ -290,17 +295,17 @@
 
 
 <script type="text/x-red" data-help-name="groov-data-store">
-    <p>Settings for a <i>groov</i> Data Store.</p>
+    <p>Settings for a <i>groov</i> View Data Store.</p>
     <h2>Basic Configuration</h2>
-    <p><b>Groov Project</b> - the settings for a <i>groov</i> system and project.</p>
-    <p><b>Data Store Name</b> - the name of the Data Store as configured in the <i>groov</i> project.</p>
+    <p><b>Groov Project</b> - the settings for a <i>groov</i> View system and project.</p>
+    <p><b>Data Store Name</b> - the name of the Data Store as configured in the <i>groov</i> View project.</p>
 
 </script>
 
 <script type="text/x-red" data-help-name="groov-read-ds">
-    <p>A node for reading values from a <i>groov</i> Data Store device.</p>
+    <p>A node for reading values from a <i>groov</i> View Data Store device.</p>
     <h2>Basic Usage</h2>
-    <p>The <b>tag name</b> must be a valid <i>groov</i> Data Store tag name for the current project in <i>groov</i>.
+    <p>The <b>tag name</b> must be a valid <i>groov</i> View Data Store tag name for the current project in <i>groov</i> View.
     </p>
     <p>For tables, the <b>table index</b> and <b>length</b> fields indicate that the tag is a table and indicate how much of the table is returned. 
        <ul>
@@ -310,11 +315,11 @@
     <h2>Returned Values</h2>
     <p>By default, the result is placed in <code>msg.payload</code>. 
        The result may also be placed into any property on the <code>msg</code> object.</p>
-    <p>If possible, the node will extract the value from the returned object. For instance, <i>groov</i> will often
+    <p>If possible, the node will extract the value from the returned object. For instance, <i>groov</i> View will often
        return an object like <b>{"id": 1, "valueType":"integerValue", "value" : 123 }</b>. In that case, the node will extact 123 from the returned object
        and place it in the message payload. Or if an array is returned, it will be placed in the payload.</p>
     <p>In all cases, the full response body will be placed in <code>msg.body</code>. The responses are
-       defined by the <i>groov</i> Data Store REST API.</p>
+       defined by the <i>groov</i> View Data Store REST API.</p>
     <h2>Topic</h2>
     <p>The node can either leave the <code>msg.topic</code> alone, or set it to any string value.</p>
     <h2>Dynamic Settings</h2>
@@ -343,9 +348,9 @@
 </script/>
 
 <script type="text/x-red" data-help-name="groov-write-ds">
-    <p>A node for writing values to a <i>groov</i> Data Store device.</p>
+    <p>A node for writing values to a <i>groov</i> View Data Store device.</p>
     <h2>Basic Usage</h2>
-    <p>The <b>tag Name</b> must be a valid <i>groov</i> Data Store tag name for the current project in <i>groov</i>.
+    <p>The <b>tag Name</b> must be a valid <i>groov</i> View Data Store tag name for the current project in <i>groov</i> View.
     <p>For tables, the <b>index</b> field sets the index to be written.
        If left blank, then 0 is used.
     <h2>Value to Write - Overview</h2>
@@ -370,7 +375,7 @@ msg.payload = {
 </pre> 
     <h2>Response</h2>
     <p>The full response body will be placed in <code>msg.body</code>.
-       The responses are defined by the <i>groov</i> Data Store REST API.</p>
+       The responses are defined by the <i>groov</i> View Data Store REST API.</p>
     <h2>Error Handling</h2>
     <p>If an error occurs, an error will be thrown that can be caught with a Catch node. No output message will be sent, so the flow will not continue.</p>
     <p>The message sent to the Catch node will have <u>one</u> of the following properties:
