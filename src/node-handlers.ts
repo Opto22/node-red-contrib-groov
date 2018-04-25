@@ -197,15 +197,21 @@ export abstract class NodeBaseImpl
             return;
         }
 
-        this.apiLib.getServerType(this.node, () => {
+        this.apiLib.getServerType(this.node, (error: any) =>
+        {
+            if (error) {
+                ErrorHanding.handleErrorResponse(error, msg, this.node);
+                return;
+            }
+
             // Add the message to the queue.
             var queueLength = this.msgQueue.add(msg, this.node, this, this.onInput);
-    
+
             // See if there's room for the message.
             if (queueLength < 0) {
                 this.node.warn('Message rejected. Queue is full for Groov.');
             }
-    
+
             // Update the node's status, but don't overwrite the status if this node is currently
             // being processed.
             var currentMsgBeingProcessed = this.msgQueue.getCurrentMessage();

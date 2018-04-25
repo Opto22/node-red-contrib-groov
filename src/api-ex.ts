@@ -254,6 +254,13 @@ export class DatastoreApiEx extends DatastoreApi
                 }
             ).catch((error: any) =>
             {
+                // For certain errors, don't even continue.
+                if (error && (error.code == 'ETIMEDOUT' || error.code == 'ENETUNREACH')) {
+                    // We're done. No reason to try again.
+                    callback(error);
+                    return;
+                }
+
                 // Try EPIC path instead
                 this.basePath = this.originalAddress + '/view/api/';
                 super.dataStoreListDevices().then(

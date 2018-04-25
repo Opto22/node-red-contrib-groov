@@ -45,7 +45,8 @@ export class ResponseErrorMessages
         // Socket errors
         'ECONNREFUSED': 'Connection refused',
         'ETIMEDOUT': 'Timeout',
-        'EHOSTUNREACH': 'groov unreachable',
+        'EHOSTUNREACH': 'Device unreachable',
+        'ENETUNREACH': 'Network unreachable',
         'ENOTFOUND': 'Address not found', // a Node.js error, not POSIX
         'EINVAL': 'Invalid argument',
         'EAI_AGAIN': 'Address not found',
