@@ -209,7 +209,13 @@ export class DatastoreApiEx extends DatastoreApi
     }
 
 
-    public getServerType(node: NodeRed.Node | undefined, callback: (error?: any) => any)
+     /**
+     * Determines the type of Groov View we're communicating with.
+     * First tries the Groov Box/Server method, and then Groov EPIC method.
+     * Both might fail, since the device may be unreachable.
+     * Once determined, the type is cached.
+     */
+    public getDeviceType(node: NodeRed.Node | undefined, callback: (error?: any) => any)
     {
         if (this.hasDeterminedSystemType) {
             process.nextTick(callback);

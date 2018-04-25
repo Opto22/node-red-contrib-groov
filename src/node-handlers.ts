@@ -197,7 +197,7 @@ export abstract class NodeBaseImpl
             return;
         }
 
-        this.apiLib.getServerType(this.node, (error: any) =>
+        this.apiLib.getDeviceType(this.node, (error: any) =>
         {
             if (error) {
                 ErrorHanding.handleErrorResponse(error, msg, this.node);

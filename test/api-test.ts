@@ -24,7 +24,7 @@ describe('Swagger codegen API client', function()
 
     before(function(beforeDone: MochaDone)
     {
-        sharedApiClient.getServerType(undefined, beforeDone);
+        sharedApiClient.getDeviceType(undefined, beforeDone);
     });
 
     it('dataStoreListDevices() works', function(done)
