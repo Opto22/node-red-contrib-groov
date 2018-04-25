@@ -278,16 +278,26 @@
     <p>&nbsp;</p>
     <h2>HTTPS Settings</h2>    
     <p>Except for "localhost" addresses, the SSL Certificates  fields must also be configured.</p>
-    <p><b>CA or Self-Signed</b> - the full path or filename of either a Certificate Authority (CA) or self-signed certificate. Leave blank when address is "localhost".</p>
-    <p><b>Public Key</b> - the full path or filename of the public key certificate. Leave this field blank if using a self-signed certificate.</p>
+    <p><b>CA or Self-Signed</b> - the full path or filename of either a Certificate Authority (CA) 
+        or self-signed certificate. Leave blank when address is "localhost".
+    </p>
+    <p><b>Public Key</b> - the full path or filename of the public key certificate. Leave this field 
+        blank if using a self-signed certificate.
+    </p>
     <p>Whether the full path or filename is entered depends on where Node-RED is running.
         <ul>
-            <li><b>EPIC: </b>If using a <i>groov</i> EPIC PR1 processor to access another <i>groov</i> device or server, upload the certificates 
-                    with <i>groov</i> Manage, using the Security -> Client SSL page. Enter just the filenames here.</li>
-            <li><b>Box: </b>If using a GROOV-AR1 to access another <i>groov</i> Box or Server, upload the certificates 
-            with Node-RED Admin. Enter just the filenames here.</li>
-            <li><b>Computer: </b>If using Node-RED on a computer, enter the path and filenames of the certificates, which must be located
-                on the same computer. They will be loaded directly from the local file system.</li>
+            <li><b>EPIC: </b>If using a <i>groov</i> EPIC PR1 processor to access another <i>groov</i>
+                device or server, upload the certificates 
+                    with <i>groov</i> Manage, using the Security -> Client SSL page. Enter just the
+                    filenames here.
+            </li>
+            <li><b>Box: </b>If using a GROOV-AR1 to access another <i>groov</i> Box or Server, upload
+                the certificates with Node-RED Admin. Enter just the filenames here.
+            </li>
+            <li><b>Computer: </b>If using Node-RED on a computer, enter the path and filenames of 
+                the certificates, which must be located on the same computer. They will be loaded 
+                directly from the local file system.
+            </li>
         </ul>
     <p>The certificates must be in PEM format.</p>
 
@@ -305,9 +315,11 @@
 <script type="text/x-red" data-help-name="groov-read-ds">
     <p>A node for reading values from a <i>groov</i> View Data Store device.</p>
     <h2>Basic Usage</h2>
-    <p>The <b>tag name</b> must be a valid <i>groov</i> View Data Store tag name for the current project in <i>groov</i> View.
+    <p>The <b>tag name</b> must be a valid <i>groov</i> View Data Store tag name for the current
+        project in <i>groov</i> View.
     </p>
-    <p>For tables, the <b>table index</b> and <b>length</b> fields indicate that the tag is a table and indicate how much of the table is returned. 
+    <p>For tables, the <b>table index</b> and <b>length</b> fields indicate that the tag is a table 
+        and indicate how much of the table is returned. 
        <ul>
          <li>If both fields are left blank, then only the first element is returned in an array.</li>
          <li>If only the <b>table index</b> is used, then only that element is returned in an array.</li>
@@ -315,15 +327,19 @@
     <h2>Returned Values</h2>
     <p>By default, the result is placed in <code>msg.payload</code>. 
        The result may also be placed into any property on the <code>msg</code> object.</p>
-    <p>If possible, the node will extract the value from the returned object. For instance, <i>groov</i> View will often
-       return an object like <b>{"id": 1, "valueType":"integerValue", "value" : 123 }</b>. In that case, the node will extact 123 from the returned object
-       and place it in the message payload. Or if an array is returned, it will be placed in the payload.</p>
+    <p>If possible, the node will extract the value from the returned object. For instance, 
+       <i>groov</i> View will often return an object like <b>{"id": 1, "valueType":"integerValue", 
+       "value" : 123 }</b>. In that case, the node will extact 123 from the returned object
+       and place it in the message payload. Or if an array is returned, it will be placed in the payload.
+    </p>
     <p>In all cases, the full response body will be placed in <code>msg.body</code>. The responses are
        defined by the <i>groov</i> View Data Store REST API.</p>
     <h2>Topic</h2>
     <p>The node can either leave the <code>msg.topic</code> alone, or set it to any string value.</p>
     <h2>Dynamic Settings</h2>
-        <p>If the incoming message's payload is an object with the following properties, then they will be used over any settings in the node itself.</code> 
+        <p>If the incoming message's payload is an object with the following properties, then they
+           will be used over any settings in the node itself.
+        </p> 
         <p><code>msg.payload.tagName</code> - a number with the tag's ID.</p>
         <p><code>msg.payload.tableStartIndex</code> - a number for the first index to read in a table.</p>
         <p><code>msg.payload.tableLength</code> - a number for the number of table elements to read.</p>
@@ -350,22 +366,31 @@
 <script type="text/x-red" data-help-name="groov-write-ds">
     <p>A node for writing values to a <i>groov</i> View Data Store device.</p>
     <h2>Basic Usage</h2>
-    <p>The <b>tag Name</b> must be a valid <i>groov</i> View Data Store tag name for the current project in <i>groov</i> View.
+    <p>The <b>tag Name</b> must be a valid <i>groov</i> View Data Store tag name for the current
+        project in <i>groov</i> View.
     <p>For tables, the <b>index</b> field sets the index to be written.
        If left blank, then 0 is used.
     <h2>Value to Write - Overview</h2>
-    <p>The <b>value</b> can either come from a property on the incoming message (dynamic) or as entered in the Value field (static).</p>
+    <p>The <b>value</b> can either come from a property on the incoming message (dynamic) or as 
+        entered in the Value field (static).</p>
     <h2>Value to Write - Dynamic</h2>
-    <p>When the value is coming in a <code>msg</code> property (including <code>msg.payload</code>), the value can be
-       a boolean, number, string, or array.</p>
+    <p>When the value is coming in a <code>msg</code> property (including <code>msg.payload</code>),
+        the value can be a boolean, number, string, or array.
+    </p>
     <h2>Value to Write - Static</h2>
     <p>If the value is entered directly in the Value field, it is treated as a JavaScript value. 
     <h2>Dynamic Settings</h2>
-        <p>If the incoming message's payload is an object with the following properties, then they will be used over any settings in the node itself.</code> 
+        <p>If the incoming message's payload is an object with the following properties, then they 
+           will be used over any settings in the node itself.
+        </p>
         <p><code>msg.payload.tagName</code> - a number with the tag's ID.</p>
         <p><code>msg.payload.tableStartIndex</code> - a number for the index to write in the table.</p>
-        <p>As mentioned above, the value itself can also come in on the message, in whatever property you specify.</p>
-        <p>For example, here's how a dynamic payload would look for writing several values starting at index <i>5</i> in a table called <i>MyTable</i>, with the Value field specified as <i>msg.payload.values</i>:</p>
+        <p>As mentioned above, the value itself can also come in on the message, in whatever property
+           you specify.</p>
+        <p>For example, here's how a dynamic payload would look for writing several values starting
+           at index <i>5</i> in a table called <i>MyTable</i>, with the Value field specified as 
+           <i>msg.payload.values</i>:
+        </p>
 <pre>
 msg.payload = {
   tagName         : 'MyTagName',
@@ -377,7 +402,9 @@ msg.payload = {
     <p>The full response body will be placed in <code>msg.body</code>.
        The responses are defined by the <i>groov</i> View Data Store REST API.</p>
     <h2>Error Handling</h2>
-    <p>If an error occurs, an error will be thrown that can be caught with a Catch node. No output message will be sent, so the flow will not continue.</p>
+    <p>If an error occurs, an error will be thrown that can be caught with a Catch node. No output
+        message will be sent, so the flow will not continue.
+    </p>
     <p>The message sent to the Catch node will have <u>one</u> of the following properties:
     </p>
     <ul>
