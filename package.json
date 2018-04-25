@@ -1,6 +1,6 @@
 {
     "name": "node-red-contrib-groov",
-    "version": "1.0.3-beta.2",
+    "version": "1.1.0-beta.1",
     "description": "Node-RED nodes for Groov, the mobile operator interface from Opto 22.",
     "homepage": "http://developer.opto22.com/nodered/groov/",
     "license": "Apache-2.0",
