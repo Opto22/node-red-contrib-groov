@@ -316,7 +316,7 @@ describe('Groov Data Store Nodes', function()
         ConfigHandler.setRED(RED);
 
 
-        apiClient.getServerType(() =>
+        apiClient.getServerType(undefined, () =>
         {
             getTagMap(apiClient, () =>
             {

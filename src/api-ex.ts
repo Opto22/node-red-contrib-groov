@@ -22,6 +22,7 @@ import fs = require('fs');
 import events = require('events');
 import request = require('request');
 import Promise = require('bluebird');
+import * as NodeRed from 'opto22-node-red-common/typings/nodered';
 
 var DatastoreApi = ApiLib.DatastoreApi;
 
@@ -208,13 +209,16 @@ export class DatastoreApiEx extends DatastoreApi
     }
 
 
-    public getServerType(callback: (error?: any) => any)
+    public getServerType(node: NodeRed.Node | undefined, callback: (error?: any) => any)
     {
-
         if (this.hasDeterminedSystemType) {
             process.nextTick(callback);
         }
         else {
+            if (node) {
+                node.status({ fill: "green", shape: "ring", text: 'determining device type' });
+            }
+
             super.dataStoreListDevices().then(
                 // onFullfilled handler
                 (fullfilledResponse: PromiseResponse) =>

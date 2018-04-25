@@ -31,7 +31,7 @@ describe('Enhanced API client', function()
 
     before(function(beforeDone: MochaDone)
     {
-        sharedApiClient.getServerType(beforeDone);
+        sharedApiClient.getServerType(undefined, beforeDone);
     });
 
     it('getReadSingleTagByNamePromise test', function(done)
@@ -168,7 +168,7 @@ describe('Enhanced API client', function()
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
-        localApiClient.getServerType(() =>
+        localApiClient.getServerType(undefined, () =>
         {
             localApiClient.getReadSingleTagByNamePromise('NodeRedTestDataStore', 'dTag0', undefined, undefined, (promise: Promise<PromiseResponse>, error: string): void =>
             {
@@ -192,7 +192,7 @@ describe('Enhanced API client', function()
 
         should(localApiClient.hasTagMap()).be.exactly(false);
 
-        localApiClient.getServerType(() =>
+        localApiClient.getServerType(undefined, () =>
         {
             localApiClient.getWriteSingleTagByNamePromise('4.5', 'NodeRedTestDataStore', 'dTag0', undefined, (promise: Promise<PromiseResponse>, error: string): void =>
             {

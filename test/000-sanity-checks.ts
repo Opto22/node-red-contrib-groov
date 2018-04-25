@@ -35,7 +35,7 @@ describe('sanity checks', function()
 
     before(function(beforeDone: MochaDone)
     {
-        sharedApiClient.getServerType(beforeDone);
+        sharedApiClient.getServerType(undefined, beforeDone);
     });
 
 

@@ -197,7 +197,7 @@ export abstract class NodeBaseImpl
             return;
         }
 
-        this.apiLib.getServerType(() => {
+        this.apiLib.getServerType(this.node, () => {
             // Add the message to the queue.
             var queueLength = this.msgQueue.add(msg, this.node, this, this.onInput);
     
