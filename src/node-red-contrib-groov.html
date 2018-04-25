@@ -278,9 +278,9 @@
     <p>&nbsp;</p>
     <h2>HTTPS Settings</h2>    
     <p>Except for "localhost" addresses, the SSL Certificates  fields must also be configured.</p>
-    <p><b>CA or Self-Signed</b> - the full path or filename of either a Certificate Authority (CA) or self-signed certificate.</p>
+    <p><b>CA or Self-Signed</b> - the full path or filename of either a Certificate Authority (CA) or self-signed certificate. Leave blank when address is "localhost".</p>
     <p><b>Public Key</b> - the full path or filename of the public key certificate. Leave this field blank if using a self-signed certificate.</p>
-    <p>Whether the full path of filename is entered depends on where Node-RED is running.
+    <p>Whether the full path or filename is entered depends on where Node-RED is running.
         <ul>
             <li><b>EPIC: </b>If using a <i>groov</i> EPIC PR1 processor to access another <i>groov</i> device or server, upload the certificates 
                     with <i>groov</i> Manage, using the Security -> Client SSL page. Enter just the filenames here.</li>

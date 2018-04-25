@@ -106,8 +106,8 @@ export class DatastoreApiEx extends DatastoreApi
     private configError: boolean;
 
     private hasDeterminedSystemType: boolean;
-    private isGroovBox: boolean;
-    private isGroovEPIC: boolean;
+    private isTargetGroovBox: boolean;
+    private isTargetGroovEPIC: boolean;
 
 
     private tagMap: any;
@@ -120,8 +120,8 @@ export class DatastoreApiEx extends DatastoreApi
         super(address + path);
 
         this.hasDeterminedSystemType = false;
-        this.isGroovBox = false;
-        this.isGroovEPIC = false;
+        this.isTargetGroovBox = false;
+        this.isTargetGroovEPIC = false;
 
         this.tagMap = null;
         this.originalAddress = address;
@@ -220,23 +220,25 @@ export class DatastoreApiEx extends DatastoreApi
                 (fullfilledResponse: PromiseResponse) =>
                 {
                     if (fullfilledResponse.body && Array.isArray(fullfilledResponse.body)) {
-                        this.isGroovBox = true;
+                        this.isTargetGroovBox = true;
                         this.hasDeterminedSystemType = true;
                         callback();
                     }
                     else {
+                        // Try EPIC path instead.
                         this.basePath = '/view/api/';
 
                         super.dataStoreListDevices().then(
                             (fullfilledResponse: PromiseResponse) =>
                             {
                                 if (fullfilledResponse.body && Array.isArray(fullfilledResponse.body)) {
-                                    this.isGroovEPIC = true;
+                                    this.isTargetGroovEPIC = true;
                                     this.hasDeterminedSystemType = true;
                                     callback();
                                 }
                                 else {
-                                    this.basePath = this.originalAddress + '/api/'; // reset to default
+                                    // Reset to default (Groov Box)
+                                    this.basePath = this.originalAddress + '/api/';
                                     callback(); // error ?
                                 }
                             }).catch((error: any) =>
@@ -248,17 +250,19 @@ export class DatastoreApiEx extends DatastoreApi
                 }
             ).catch((error: any) =>
             {
+                // Try EPIC path instead
                 this.basePath = this.originalAddress + '/view/api/';
                 super.dataStoreListDevices().then(
                     (fullfilledResponse: PromiseResponse) =>
                     {
                         if (fullfilledResponse.body && Array.isArray(fullfilledResponse.body)) {
-                            this.isGroovEPIC = true;
+                            this.isTargetGroovEPIC = true;
                             this.hasDeterminedSystemType = true;
                             callback();
                         }
                         else {
-                            this.basePath = this.originalAddress + '/api/'; // reset to default
+                            // Reset to default (Groov Box)
+                            this.basePath = this.originalAddress + '/api/';
                             callback(); // error ?
                         }
                     }).catch((error: any) =>
