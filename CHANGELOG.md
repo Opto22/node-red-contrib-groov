@@ -1,4 +1,4 @@
-# Node-RED for Groov
+# Node-RED for Groov View
 
 ### 1.1.0 - May 18, 2018
 
@@ -9,15 +9,15 @@ Improvements
 
 Improvements
 
- * The nodes will now reacquire the list of tags from _groov_ when any flow is deployed. Previously
-it required a Full Deploy to use any new tags added to the _groov_ project.
+ * The nodes will now reacquire the list of tags from _groov_ View when any flow is deployed. Previously
+it required a Full Deploy to use any new tags added to the _groov_ View project.
 
 ### 1.0.1 - January 16, 2017
 
 Fixes
 
  * Fix for [#1](https://github.com/Opto22/node-red-contrib-groov/issues/1) - localhost address
-not working for Node-RED and Groov Server on same machine.
+not working for Node-RED and Groov Server for Windows on same machine.
 
 ### 1.0.0 - December 22, 2016
 

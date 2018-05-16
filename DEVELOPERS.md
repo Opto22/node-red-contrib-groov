@@ -1,4 +1,4 @@
-#Node-RED for Groov
+# Node-RED for Groov View
 
 ## Source Code
 
@@ -40,7 +40,7 @@ grunt clean
 
 ## Link Nodes
 
-In order for your development version of the _groov_ nodes to be used by Node-RED,
+In order for your development version of the _groov_ View nodes to be used by Node-RED,
 you need to link your source directory into the local npm system. Run:
 
 ```
@@ -51,7 +51,7 @@ sudo npm link
 
 Running all tests requires the following:
 
- 1. _groov_ test project running in a _groov_ Box (AR1/AT1), _groov_ Server for Windows, or _groov_ EPIC device (PR1).
+ 1. _groov_ View test project running in a _groov_ EPIC processor (PR1), _groov_ Edge Appliance (AR1/AT1), or _groov_ Server for Windows.
     * Any project can be used, but must have the following in it:
         * Data Store device named _NodeRedTestDataStore_, with the following tags:
             * _bTag0_ - Boolean variable

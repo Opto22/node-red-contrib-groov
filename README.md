@@ -1,8 +1,8 @@
-# Node-RED for _groov_
+# Node-RED for _groov_ View
 
 ## Overview
 
-Node-RED nodes for [_groov_](http://groov.com), the mobile operator interface from [Opto 22](http://www.opto22.com).
+Node-RED nodes for [_groov_ View](http://groov.com), the mobile operator interface from [Opto 22](http://www.opto22.com).
 Allows for the reading and writing of Data Store tags.
 
 
@@ -26,7 +26,7 @@ For more detailed information, see the [online documentation](http://developer.o
 
 ## Copyright and License
 
-Copyright 2016-2017 Opto 22
+Copyright 2016-2018 Opto 22
 
 Licensed under the Apache 2.0 license.
 
