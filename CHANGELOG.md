@@ -1,6 +1,11 @@
 # Node-RED for Groov
 
-### 1.0.2 - January 24, 2017
+### 1.1.0 - May 18, 2018
+
+Improvements
+
+ * The nodes now support all versions of _groov_ View, including _groov_ EPIC processors (GRV-EPIC-PR1), _groov_ Edge Appliance (GROOV-AR1), and _groov_ Server for Windows.
+ ### 1.0.2 - January 24, 2017
 
 Improvements
 
