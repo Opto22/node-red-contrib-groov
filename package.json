@@ -1,6 +1,6 @@
 {
     "name": "node-red-contrib-groov",
-    "version": "1.1.0",
+    "version": "1.1.1-alpha.1",
     "description": "Node-RED nodes for Groov View, the mobile operator interface from Opto 22.",
     "homepage": "http://developer.opto22.com/nodered/groov/",
     "license": "Apache-2.0",
@@ -8,7 +8,7 @@
         "build": "grunt"
     },
     "dependencies": {
-        "opto22-node-red-common": "1.0.3",
+        "opto22-node-red-common": "1.0.7",
         "simple-node-logger": "0.93.12",
         "request": "2.75.0",
         "bluebird": "3.4.6",
