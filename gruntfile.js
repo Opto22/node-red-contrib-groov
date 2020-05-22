@@ -113,7 +113,7 @@ module.exports = function(grunt) {
       pack: {
         options: {
           cmd:  'pack',
-          args: 'package'
+          args: './package'
         }
       }
     }
