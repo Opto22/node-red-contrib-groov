@@ -192,14 +192,6 @@ export class DatastoreApiEx extends DatastoreApi
             if (!this.apiKey) {
                 this.configError = true;
             }
-            // TODO Bring this back
-            //
-            // else {
-            //     // Make sure we have at least a CA certificate file, which also covers self-signed certs.
-            //     if (!this.caCertFile) {
-            //         this.configError = true;
-            //     }
-            // }
             else {
                 this.configError = false;
             }
