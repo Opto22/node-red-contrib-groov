@@ -1,5 +1,11 @@
 # Node-RED for Groov View
 
+### 1.1.2
+
+October 2, 2020
+
+ * Improved error messages for a few common certificate problems.
+
 ### 1.1.1 - May 27, 2020
 
  * The nodes now support running on a _groov_ RIO I/O module.
