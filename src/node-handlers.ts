@@ -146,6 +146,8 @@ export abstract class NodeBaseImpl
     // The node object.
     protected node: NodeRed.Node;
 
+    protected previousResponseError: ErrorHanding.ErrorDetails | undefined;
+
     constructor(nodeConfig: NodeBaseConfiguration, node: NodeRed.Node)
     {
         //console.log('NodeBaseImpl -> nodeConfig = ' + JSON.stringify(nodeConfig));
@@ -200,7 +202,8 @@ export abstract class NodeBaseImpl
         this.apiLib.getDeviceType(this.node, (error: any) =>
         {
             if (error) {
-                ErrorHanding.handleErrorResponse(error, msg, this.node);
+                this.previousResponseError = ErrorHanding.handleErrorResponse(error, msg, this.node,
+                    this.previousResponseError);
                 return;
             }
 
@@ -226,11 +229,19 @@ export abstract class NodeBaseImpl
 
     protected updateQueuedStatus(queueLength: number)
     {
-        if (queueLength >= 1) {
-            this.node.status({ fill: "green", shape: "ring", text: queueLength + ' queued' });
+        if (this.previousResponseError) {
+            this.node.status({
+                fill: "red", shape: "ring",
+                text: "queued [" + this.previousResponseError.nodeShortErrorMsg + "]"
+            });
         }
-        else if (queueLength < 0) {
-            this.node.status({ fill: "yellow", shape: "ring", text: "queue full" });
+        else {
+            if (queueLength >= 1) {
+                this.node.status({ fill: "green", shape: "ring", text: queueLength + ' queued' });
+            }
+            else if (queueLength < 0) {
+                this.node.status({ fill: "yellow", shape: "ring", text: "queue full" });
+            }
         }
     }
 
@@ -335,16 +346,29 @@ export class ReadNodeImpl extends NodeBaseImpl
             (promise: Promise<PromiseResponse>, error: string): void =>
             {
                 if (error) {
-                    ErrorHanding.handleErrorResponse(error, msg, this.node);
+                    this.previousResponseError = ErrorHanding.handleErrorResponse(error, msg, this.node,
+                        this.previousResponseError);
+
                     this.msgQueue.done(50);
                 }
                 else {
-                    this.node.status({ fill: "green", shape: "dot", text: "reading" });
+                    if (this.previousResponseError) {
+                        this.node.status({
+                            fill: "red", shape: "dot",
+                            text: "reading [" + this.previousResponseError.nodeShortErrorMsg + "]"
+                        });
+                    }
+                    else {
+                        this.node.status({ fill: "green", shape: "dot", text: "reading" });
+                    }
 
                     promise.then(
                         // onFullfilled handler
                         (fullfilledResponse: PromiseResponse) =>
                         {
+                            //Clear the previous error
+                            this.previousResponseError = undefined;
+
                             this.node.status({});
 
                             // Always attach the response's body to msg.
@@ -360,7 +384,9 @@ export class ReadNodeImpl extends NodeBaseImpl
                         // onRejected handler
                         (error: any) =>
                         {
-                            ErrorHanding.handleErrorResponse(error, msg, this.node);
+                            this.previousResponseError = ErrorHanding.handleErrorResponse(error, msg, this.node,
+                                this.previousResponseError);
+
                             this.msgQueue.done(50);
                         }
                     );
@@ -519,36 +545,56 @@ export class WriteNodeImpl extends NodeBaseImpl
 
         this.apiLib.getWriteSingleTagByNamePromise(valueObject, this.dataStoreNode.dsName,
             this.nodeConfig.tagName, tableStartIndex, (promise: Promise<PromiseResponse>, error: string): void =>
-            {
-                if (error) {
-                    ErrorHanding.handleErrorResponse(error, msg, this.node);
-                    WriteNodeImpl.activeMessageCount--;
-                    this.msgQueue.done(50);
+        {
+            if (error) {
+                this.previousResponseError = ErrorHanding.handleErrorResponse(error, msg, this.node,
+                    this.previousResponseError);
+
+                WriteNodeImpl.activeMessageCount--;
+                this.msgQueue.done(50);
+            }
+            else {
+                if (this.previousResponseError) {
+                    this.node.status({
+                        fill: "red", shape: "dot",
+                        text: "writing [" + this.previousResponseError.nodeShortErrorMsg + "]"
+                    });
                 }
                 else {
                     this.node.status({ fill: "green", shape: "dot", text: "writing" });
-
-                    promise.then(
-                        // onFullfilled handler
-                        (fullfilledResponse: PromiseResponse) =>
-                        {
-                            WriteNodeImpl.activeMessageCount--;
-
-                            this.node.status({});
-                            msg.body = fullfilledResponse.body;
-                            this.node.send(msg);
-                            var queueLength = this.msgQueue.done(0);
-                            this.updateQueuedStatus(queueLength);
-                        },
-                        // onRejected handler
-                        (error: any) =>
-                        {
-                            WriteNodeImpl.activeMessageCount--;
-                            ErrorHanding.handleErrorResponse(error, msg, this.node);
-                            this.msgQueue.done(50);
-                        });
                 }
-            });
+
+                promise.then(
+                    // onFullfilled handler
+                    (fullfilledResponse: PromiseResponse) =>
+                    {
+                        WriteNodeImpl.activeMessageCount--;
+
+                        // Clear the previous error
+                        this.previousResponseError = undefined;
+
+                        this.node.status({});
+
+                        msg.body = fullfilledResponse.body;
+
+                        this.node.send(msg);
+
+                        var queueLength = this.msgQueue.done(0);
+
+                        this.updateQueuedStatus(queueLength);
+                    },
+                    // onRejected handler
+                    (error: any) =>
+                    {
+                        WriteNodeImpl.activeMessageCount--;
+
+                        this.previousResponseError = ErrorHanding.handleErrorResponse(error, msg, this.node,
+                            this.previousResponseError);
+
+                        this.msgQueue.done(50);
+                    });
+            }
+        });
     }
 
 
