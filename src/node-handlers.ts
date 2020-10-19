@@ -230,6 +230,7 @@ export abstract class NodeBaseImpl
     protected updateQueuedStatus(queueLength: number)
     {
         if (this.previousResponseError) {
+            // If there's an existing error, make sure we combine the status and messages.
             this.node.status({
                 fill: "red", shape: "ring",
                 text: "queued [" + this.previousResponseError.nodeShortErrorMsg + "]"
