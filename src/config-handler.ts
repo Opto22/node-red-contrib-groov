@@ -18,7 +18,7 @@ import * as ApiLib from "./api";
 import * as ApiExLib from "./api-ex";
 import * as CertificateUtil from 'opto22-node-red-common/lib/CertificateUtil';
 import * as NodeRed from 'opto22-node-red-common/typings/nodered';
-import MessageQueue from 'opto22-node-red-common/lib/MessageQueue';
+import * as  MessageQueue from 'opto22-node-red-common/lib/MessageQueue';
 
 import * as http from 'http';
 import * as https from 'https';
@@ -52,6 +52,7 @@ export interface ProjectConfiguration extends NodeRed.NodeConfiguration
 {
     address: string;
     credentials: string;
+    msgQueueFullBehavior: MessageQueue.FullQueueBehaviorType;
 }
 
 export interface ProjectNode extends NodeRed.Node
@@ -156,7 +157,8 @@ export function createProjectNode(config: ProjectConfiguration)
     }
 
     // console.log('createProjectNode -> config = ' + JSON.stringify(config));
-    var apiClient = globalConnections.createConnection(address, key, publicCertFile, caCertFile, config.id);
+    var apiClient = globalConnections.createConnection(address, key, publicCertFile, caCertFile,
+        config.msgQueueFullBehavior, config.id);
 
     projectNode.on('close', () =>
     {
@@ -169,9 +171,9 @@ export function createProjectNode(config: ProjectConfiguration)
 class DataStoreConnection 
 {
     public apiClient: ApiExLib.DatastoreApiEx;
-    public queue: MessageQueue;
+    public queue: MessageQueue.default;
 
-    constructor(apiClient: ApiExLib.DatastoreApiEx, queue: MessageQueue)
+    constructor(apiClient: ApiExLib.DatastoreApiEx, queue: MessageQueue.default)
     {
         this.apiClient = apiClient;
         this.queue = queue;
@@ -182,13 +184,15 @@ export class DataStoreConnections
 {
     private connectionCache: DataStoreConnection[] = [];
 
-    public createConnection(address: string, key: string, publicCertFile: Buffer, caCertFile: Buffer, id: string): DataStoreConnection
+    public createConnection(address: string, key: string, publicCertFile: Buffer, caCertFile: Buffer,
+        msgQueueFullBehavior: MessageQueue.FullQueueBehaviorType, id: string): DataStoreConnection
     {
         // Create the connection to the Groov API.
         var apiClient = new ApiExLib.DatastoreApiEx(key, 'https://' + address, publicCertFile, caCertFile);
 
         // Cache it, using the Configuration node's id property.
-        this.connectionCache[id] = new DataStoreConnection(apiClient, new MessageQueue(500));
+        this.connectionCache[id] = new DataStoreConnection(apiClient,
+            new MessageQueue.default(500, msgQueueFullBehavior));
 
         return this.connectionCache[id];
     }

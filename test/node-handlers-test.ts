@@ -292,22 +292,22 @@ describe('Groov Data Store Nodes', function()
 
        ConfigHandler.globalConnections.createConnection(dataStoreConfig.project.address,
             dataStoreConfig.project.credentials.key, 
-            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile, 'REJECT_NEW',
             dataStoreConfig.project.id);
 
         ConfigHandler.globalConnections.createConnection(dataStoreConfigMissingApiKey.project.address,
             dataStoreConfigMissingApiKey.project.credentials.key, 
-            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile, 'REJECT_NEW',
             dataStoreConfigMissingApiKey.project.id);
 
         ConfigHandler.globalConnections.createConnection(dataStoreConfigBadAddress.project.address,
             dataStoreConfigBadAddress.project.credentials.key, 
-            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile, 'REJECT_NEW',
             dataStoreConfigBadAddress.project.id);
 
         ConfigHandler.globalConnections.createConnection(dataStoreConfigBadPath.project.address,
             dataStoreConfigBadPath.project.credentials.key, 
-            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile,
+            clientLibAndCerts.publicCertFile, clientLibAndCerts.caCertFile, 'REJECT_NEW',
             dataStoreConfigBadPath.project.id);
 
         should.exist(ConfigHandler.globalConnections.getConnection(dataStoreConfig.project.id));
