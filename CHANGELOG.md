@@ -2,9 +2,9 @@
 
 ### 1.1.4
 
-October ??, 2020
+October 21, 2020
 
- * Message Queue improvements.
+ * Message Queue improvements:
    * Added a device option for when the mesage queue is full: "When full, message queue should [drop-old | reject-new] messages."
      * Existing device configurations will be set to "reject-new", which was the existing behavior. New device configurations
        will be set to the default of "drop-old".
