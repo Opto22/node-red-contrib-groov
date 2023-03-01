@@ -18,7 +18,7 @@
         "@types/bluebird": "3.0.33",
         "@types/form-data": "0.0.32",
         "@types/mocha": "^2.2.32",
-        "@types/node": "^6.0.40",
+        "@types/node": "6.0.40",
         "@types/request": "0.0.36",
         "@types/semver": "^5.3.30",
         "@types/should": "8.1.30",
